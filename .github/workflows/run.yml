@@ -34,10 +34,12 @@ jobs:
     - name: Test notebooks execution
       run: |
         conda activate odw-py311
+        exit_code=0
         for file in Tutorials/Day_${{ matrix.day }}/*ipynb; do
             echo "Checking ${file}";
             if ! ./tests/check_run.sh "${file}"; then
-                echo "::error file=${file},title=Error";
-                exit 1;
+                echo "::error file=${file},title=Error"
+                exit_code=1
             fi
         done
+        exit $exit_code
